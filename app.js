@@ -39,4 +39,7 @@ app.use("/users", usersRouter);
 app.use("/products", productsRouter);
 
 
-app.listen(3000);
+const port = process.env.PORT || 3000; // Use the port provided by Render, or fallback to 3000
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
