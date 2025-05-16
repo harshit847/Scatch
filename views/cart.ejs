@@ -1,50 +1,108 @@
 <%- include('./partials/header') %>
-    <% user.cart.forEach(function(item){ %>
-        <div class="w-full h-screen flex items-start px-20 py-20 gap-10">
-            <div class="w-[30%] rounded-md overflow-hidden">
-                <div class="w-full flex justify-center h-60 bg-[<%= item.bgcolor %>]">
-                <img class="h-[12rem]" src="data:image/jpeg;base64, <%= item.image.toString('base64') %>" alt="">
-                </div>
-                <div class="w-full flex justify-between px-5 py-4 bg-[<%= item.panelcolor %>]">
-                    <h3 class="text-2xl">Clinge Bag</h3>
-                    <div class="flex items-center gap-2">
-                        <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-add-line"></i>
-                        <div class="px-2 py-1 rounded-md bg-white text-black">01</div>
-                        <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-subtract-line"></i>
-                    </div>
-                </div>
-                <div class="flex text-white items-center justify-between px-5 py-3 bg-[<%= item.textcolor %>]">
-                    <h4 class="text-lg">Net Total</h4>
-                    <h2 class="text-lg">₹ <%= bill %></h2>
-                </div>
-            </div>
-            <div class="w-[70%]">
-                <h3 class="text-xl">Price Breakdown</h3>
-                <div class="px-10 mt-5">
-                    <div class="flex mt-2">
-                        <h4 class="w-1/3">Total MRP</h4>
-                        <h4>₹ <%= item.price %></h4>
-                    </div>
-                    <div class="flex mt-2">
-                        <h4 class="w-1/3">Discount on MRP</h4>
-                        <h4>₹ <%= Number(item.discount) %></h4>
-                    </div>
-                    <div class="flex mt-2">
-                        <h4 class="w-1/3">Platform Fee</h4>
-                        <h4>₹ 20</h4>
-                    </div>
-                    <div class="flex mt-2">
-                        <h4 class="w-1/3">Shipping Fee</h4>
-                        <h4>FREE</h4>
-                    </div>
-                </div>
-                <div class="w-full h-[1px] bg-black mt-10"></div>
-                <div class="flex mt-5">
-                    <h3 class="w-1/3 text-xl">Total Amount</h3>
-                    <h3 class="font-semibold text-xl text-green-600">₹ <%= bill %> </h3>
-                </div>
-                <form action=""></form>
-            </div>
+
+    <% if (user.cart.length===0) { %>
+        <div class="w-full h-screen flex items-center justify-center text-3xl text-gray-500">
+            🛒 Your cart is empty.
         </div>
-        <% }) %>
-    <%- include('./partials/footer') %>
+        <% } else { %>
+            <% let totalAmount=0; %>
+                <div class="w-full h-screen grid items-start px-20 py-20 gap-10">
+                    <h1 class="text-3xl text-center">Cart Page 🛒</h1>
+                    <% user.cart.forEach(function(item) { %>
+                        <div class="flex items-center gap-10 w-full">
+                            <div class="w-[30%] rounded-md overflow-hidden">
+                                <div class="w-full flex justify-center h-60 bg-[<%= item.bgcolor %>]">
+                                    <img class="h-[12rem]"
+                                        src="data:image/jpeg;base64,<%= item.image.toString('base64') %>"
+                                        alt="Product Image">
+                                </div>
+                                <div class="w-full flex justify-between px-5 py-4 bg-[<%= item.panelcolor %>]">
+                                    <h3 class="text-2xl">
+                                        <%= item.name %>
+                                    </h3>
+                                    <div class="flex items-center gap-2">
+                                        <form method="POST" action="/cart/remove/<%= item._id %>">
+                                            <button type="submit" class="text-2xl">⛔</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex text-white items-center justify-between px-5 py-3 bg-[<%= item.textcolor %>]">
+                                    <h4 class="text-lg">Net Total</h4>
+                                    <h2 class="text-lg">$ <%= ((item.price - item.discount + 20) * (item.quantity || 1))
+                                            %>
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <div class="w-[70%]">
+                                <h3 class="text-xl">Price Breakdown</h3>
+                                <div class="px-10 mt-5">
+                                    <div class="flex mt-2">
+                                        <h4 class="w-1/3">Total MRP</h4>
+                                        <h4>$ <%= item.price %>
+                                        </h4>
+                                    </div>
+                                    <div class="flex mt-2">
+                                        <h4 class="w-1/3">Discount on MRP</h4>
+                                        <h4>$ <%= Number(item.discount) %>
+                                        </h4>
+                                    </div>
+                                    <div class="flex mt-2">
+                                        <h4 class="w-1/3">Platform Fee</h4>
+                                        <h4>$ 20</h4>
+                                    </div>
+                                    <div class="flex mt-2">
+                                        <h4 class="w-1/3">Shipping Fee</h4>
+                                        <h4>FREE</h4>
+                                    </div>
+                                </div>
+                                <div class="w-full h-[1px] bg-black mt-10"></div>
+                                <div class="flex mt-5">
+                                    <h3 class="w-1/3 text-xl">Total Amount</h3>
+                                    <h3 class="font-semibold text-xl text-green-600">$ <%= ((item.price - item.discount
+                                            + 20) * (item.quantity || 1)) %>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <% totalAmount +=((item.price - item.discount + 20) * (item.quantity || 1)); %>
+                            <% }) %>
+
+                                <div class="w-full mt-10 bg-white rounded-xl shadow-md p-5">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <h3 class="text-xl font-medium text-gray-700">Total Amount for All Items:</h3>
+                                        <h3 class="font-bold text-xl text-green-600">$ <%= totalAmount %>
+                                        </h3>
+                                    </div>
+                                    <hr class="my-4 border-gray-300" />
+                                    <div class="flex justify-between items-center mb-3">
+                                        <h3 class="text-xl font-medium text-gray-700">Address details:</h3>
+                                        <h3 class="text-xl text-black-300"><%= user.address %>
+                                        </h3>
+                                    </div>
+                                    <hr class="my-4 border-gray-300" />
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-medium text-gray-700">Proceed to Checkout:</h3>
+
+                                        <% if (user.address && user.address.trim() !=="" ) { %>
+                                            <a href="/cart/checkout"
+                                                class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition duration-200">
+                                                Buy Now!
+                                            </a>
+                                            <% } else { %>
+                                                <button disabled
+                                                    class="px-4 py-2 bg-gray-400 text-white text-sm font-semibold rounded-md cursor-not-allowed">
+                                                    Fill Address to Buy
+                                                </button>
+                                                <% } %>
+                                    </div>
+
+                                </div>
+
+
+                </div>
+                </div>
+                <% } %>
+
+                    <%- include('./partials/footer') %>

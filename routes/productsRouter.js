@@ -7,7 +7,7 @@ router.post("/create", upload.single("image"), async function (req, res){
     
     try{
 
-    let {name, price, discount, bgcolor, panelcolor, textcolor } = req.body;
+    let {name, price, discount, availability, newest, bgcolor, panelcolor, textcolor } = req.body;
 
 
     let product = await productModel.create({
@@ -15,12 +15,15 @@ router.post("/create", upload.single("image"), async function (req, res){
         name,
         price,
         discount,
+        availability,
+        newest,
         bgcolor,
         panelcolor,
         textcolor,
     });
 
     req.flash("success","Product Created Successfully");
+    console.log(product)
     res.redirect("/owners/admin");
 }    catch(err){
         res.send(err.message);

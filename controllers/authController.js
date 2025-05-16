@@ -4,7 +4,7 @@ const { generateToken } = require("../utils/generateToken");
 
 module.exports.registerUser = async function (req, res) {
   try {
-    let { email, password, fullname } = req.body;
+    let { email, password, fullname, contact } = req.body;
 
     let user = await userModel.findOne({ email: email });
     if (user) {
@@ -20,12 +20,14 @@ module.exports.registerUser = async function (req, res) {
             email,
             password: hash,
             fullname,
+            contact
           });
 
           let token = generateToken(user);
           res.cookie("token", token);
-
+          console.log("Contact received:", contact);
           res.redirect("/shop");
+
         }
       });
     });
