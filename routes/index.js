@@ -13,6 +13,7 @@ router.get("/", function (req, res) {
 
 router.get("/shop", isLoggedIn, async function (req, res) {
     let { sortby, filterby, search } = req.query;
+
     let success = req.flash("success");
 
     let sort = {};
@@ -34,7 +35,7 @@ router.get("/shop", isLoggedIn, async function (req, res) {
 
     try {
         let products = await productModel.find(filter).sort(sort);
-        res.render("shop", { products, success, sortby, filterby, search });
+        res.render("shop", { products, success, sortby, filterby, search, currentPath: req.path });
     } catch (error) {
         console.error("Error fetching products:", error);
         req.flash("error", "Error loading products");
