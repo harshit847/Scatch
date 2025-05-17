@@ -11,11 +11,11 @@ A simple and responsive web application for browsing and purchasing stylish bags
 
 📱 Fully responsive for mobile and desktop
 
-💳 Payment gateway integration (e.g. Razorpay / PayPal)
+💳 Payment gateway integration PayPal
 
 🛠 Tech Stack
-Frontend: HTML, CSS, JavaScript / React (Update if needed)
+Frontend: HTML, CSS, JavaScript / EJS
 
 Backend: Node.js, Express (if applicable)
 
-Database: MongoDB / JSON / LocalStorage (depending on usage)
+Database: MongoDB / JSON / LocalStorage 
