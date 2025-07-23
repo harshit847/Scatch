@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const expressSession = require('express-session');
 const flash = require('connect-flash');
+const cors = require("cors")
 
 require("dotenv").config();
 
@@ -27,6 +28,11 @@ app.use(
         secret: process.env.EXPRESS_SESSION_SECRET,
     })
 );
+
+app.use(cors({
+  origin: "http://localhost:3000", // ✅ allow only frontend dev URL
+  credentials: true
+}));
 
 app.use(flash());
 app.use(express.static(path.join(__dirname,"public")));
